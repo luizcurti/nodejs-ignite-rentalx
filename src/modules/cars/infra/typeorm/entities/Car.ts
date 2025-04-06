@@ -16,35 +16,35 @@ import { Specification } from "./Specification";
 @Entity("cars")
 class Car {
   @PrimaryColumn()
-  id: string;
+  id: string = uuidV4();
 
   @Column()
-  name: string;
+  name: string | undefined;
 
   @Column()
-  description: string;
+  description: string | undefined;
 
   @Column()
-  daily_rate: number;
+  daily_rate: number | undefined;
 
   @Column()
-  available: boolean;
+  available: boolean | undefined;
 
   @Column()
-  license_plate: string;
+  license_plate: string | undefined;
 
   @Column()
-  fine_amount: number;
+  fine_amount: number | undefined;
 
   @Column()
-  brand: string;
+  brand: string | undefined;
 
   @ManyToOne(() => Category)
   @JoinColumn({ name: "category_id" })
-  category: Category;
+  category: Category | undefined;
 
   @Column()
-  category_id: string;
+  category_id: string | undefined;
 
   @ManyToMany(() => Specification)
   @JoinTable({
@@ -52,16 +52,13 @@ class Car {
     joinColumns: [{ name: "car_id" }],
     inverseJoinColumns: [{ name: "specification_id" }],
   })
-  specifications: Specification[];
+  specifications: Specification[] | undefined;
 
   @CreateDateColumn()
-  created_at: Date;
+  created_at: Date | undefined;
 
-  constructor() {
-    if (!this.id) {
-      this.id = uuidV4();
-      this.available = true;
-    }
+  constructor() { 
+    this.available = true;
   }
 }
 

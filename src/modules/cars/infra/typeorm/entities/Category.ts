@@ -7,13 +7,13 @@ class Category {
   id?: string;
 
   @Column()
-  name: string;
+  name: string | undefined;
 
   @Column()
-  description: string;
+  description: string | undefined;
 
   @CreateDateColumn()
-  created_at: Date;
+  created_at: Date | undefined;
 
   constructor() {
     if (!this.id) {

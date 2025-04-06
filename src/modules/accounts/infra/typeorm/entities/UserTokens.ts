@@ -13,29 +13,25 @@ import { User } from "./User";
 @Entity("users_tokens")
 class UserTokens {
   @PrimaryColumn()
-  id: string;
+  id: string = uuidv4();
 
   @Column()
-  refresh_token: string;
+  refresh_token: string  | undefined;
 
   @Column()
-  user_id: string;
+  user_id: string | undefined;
 
   @ManyToOne(() => User)
   @JoinColumn({ name: "user_id" })
-  user: User;
+  user: User | undefined;
 
   @Column()
-  expires_date: Date;
+  expires_date: Date | undefined;
 
   @CreateDateColumn()
-  created_at: Date;
+  created_at: Date | undefined;
 
-  constructor() {
-    if (!this.id) {
-      this.id = uuidv4();
-    }
-  }
+  constructor() {}
 }
 
 export { UserTokens };

@@ -14,41 +14,37 @@ import { Car } from "@modules/cars/infra/typeorm/entities/Car";
 @Entity("rentals")
 class Rental {
   @PrimaryColumn()
-  id: string;
+  id: string = uuidV4();
 
   @ManyToOne(() => Car)
   @JoinColumn({ name: "car_id" })
-  car: Car;
+  car: Car | undefined;
 
   @Column()
-  car_id: string;
+  car_id: string | undefined;
 
   @Column()
-  user_id: string;
+  user_id: string | undefined;
 
   @Column()
-  start_date: Date;
+  start_date: Date | undefined;
 
   @Column()
-  end_date: Date;
+  end_date: Date | undefined;
 
   @Column()
-  expected_return_date: Date;
+  expected_return_date: Date | undefined;
 
   @Column()
-  total: number;
+  total: number | undefined;
 
   @CreateDateColumn()
-  created_at: Date;
+  created_at: Date | undefined;
 
   @UpdateDateColumn()
-  updated_at: Date;
+  updated_at: Date | undefined;
 
-  constructor() {
-    if (!this.id) {
-      this.id = uuidV4();
-    }
-  }
+  constructor() {}
 }
 
 export { Rental };

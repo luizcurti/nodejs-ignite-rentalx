@@ -47,18 +47,18 @@ class AuthenticateUserUseCase {
       throw new AppError("Email or password incorrect!");
     }
 
-    const passwordMatch = await compare(password, user.password);
+    const passwordMatch = user.password && await compare(password, user.password);
 
     if (!passwordMatch) {
       throw new AppError("Email or password incorrect!");
     }
 
-    const token = sign({}, secret_token, {
+    const token = sign( user.id as string, secret_token as string, {
       subject: user.id,
       expiresIn: expires_in_token,
     });
 
-    const refresh_token = sign({ email }, secret_refresh_token, {
+    const refresh_token = sign(email as string , secret_refresh_token as string, {
       subject: user.id,
       expiresIn: expires_in_refresh_token,
     });
@@ -76,8 +76,8 @@ class AuthenticateUserUseCase {
     const tokenReturn: IResponse = {
       token,
       user: {
-        name: user.name,
-        email: user.email,
+        name: user.name ?? 'Unknown',
+        email: user.email ?? 'Unknown', 
       },
       refresh_token,
     };

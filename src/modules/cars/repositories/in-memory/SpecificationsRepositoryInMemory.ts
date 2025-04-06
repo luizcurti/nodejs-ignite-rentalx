@@ -3,6 +3,7 @@ import {
   ICreateSpecificationDTO,
   ISpecificationsRepository,
 } from "../ISpecificationsRepository";
+import { v4 as uuidV4 } from "uuid";
 
 class SpecificationsRepositoryInMemory implements ISpecificationsRepository {
   specifications: Specification[] = [];
@@ -18,22 +19,24 @@ class SpecificationsRepositoryInMemory implements ISpecificationsRepository {
       name,
     });
 
+    if (!specification.id) {
+      specification.id = uuidV4();
+    }
+  
     this.specifications.push(specification);
-
+  
     return specification;
   }
 
-  async findByName(name: string): Promise<Specification> {
+  async findByName(name: string): Promise<Specification | undefined> {
     return this.specifications.find(
       (specification) => specification.name === name
     );
   }
   async findByIds(ids: string[]): Promise<Specification[]> {
-    const allSpecifications = this.specifications.filter((specification) =>
-      ids.includes(specification.id)
-    );
+    const validIds = ids.filter((id): id is string => !!id);
 
-    return allSpecifications;
+    return this.specifications.filter(spec => spec.id && validIds.includes(spec.id));
   }
 }
 

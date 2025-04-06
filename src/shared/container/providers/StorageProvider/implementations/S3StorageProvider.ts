@@ -21,7 +21,7 @@ class S3StorageProvider implements IStorageProvider {
 
     const fileContent = await fs.promises.readFile(originalName);
 
-    const ContentType = mime.getType(originalName);
+    const ContentType = mime.getType(originalName) || "application/octet-stream";
 
     await this.client
       .putObject({

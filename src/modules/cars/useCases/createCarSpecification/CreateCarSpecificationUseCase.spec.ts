@@ -1,4 +1,3 @@
-import { SpecificationsRepository } from "@modules/cars/infra/typeorm/repositories/SpecificationsRepository";
 import { CarsRepositoryInMemory } from "@modules/cars/repositories/in-memory/CarsRepositoryInMemory";
 import { SpecificationsRepositoryInMemory } from "@modules/cars/repositories/in-memory/SpecificationsRepositoryInMemory";
 
@@ -47,7 +46,7 @@ describe("Create Car Specification", () => {
       name: "test",
     });
 
-    const specifications_id = [specification.id];
+    const specifications_id = [specification.id].filter((id) => id !== undefined);
 
     const specificationsCars = await createCarSpecificationUseCase.execute({
       car_id: car.id,
@@ -55,6 +54,6 @@ describe("Create Car Specification", () => {
     });
 
     expect(specificationsCars).toHaveProperty("specifications");
-    expect(specificationsCars.specifications.length).toBe(1);
+    expect(specificationsCars.specifications?.length).toBe(1);
   });
 });

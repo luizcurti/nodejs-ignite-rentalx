@@ -23,10 +23,7 @@ class UsersTokensRepositoryInMemory implements IUsersTokensRepository {
     return userToken;
   }
 
-  async findByUserIdAndRefreshToken(
-    user_id: string,
-    refresh_token: string
-  ): Promise<UserTokens> {
+  async findByUserIdAndRefreshToken( user_id: string, refresh_token: string ): Promise<UserTokens | undefined> {
     const userToken = this.usersTokens.find(
       (ut) => ut.user_id === user_id && ut.refresh_token && refresh_token
     );
@@ -35,10 +32,19 @@ class UsersTokensRepositoryInMemory implements IUsersTokensRepository {
 
   async deleteById(id: string): Promise<void> {
     const userToken = this.usersTokens.find((ut) => ut.id === id);
-    this.usersTokens.splice(this.usersTokens.indexOf(userToken));
+
+    if (!userToken) {
+      throw new Error("User token not found");
+    }
+  
+    const index = this.usersTokens.indexOf(userToken);
+  
+    if (index !== -1) {
+      this.usersTokens.splice(index, 1);
+    }
   }
 
-  async findByRefreshToken(refresh_token: string): Promise<UserTokens> {
+  async findByRefreshToken(refresh_token: string): Promise<UserTokens | undefined> {
     const userToken = this.usersTokens.find(
       (ut) => ut.refresh_token === refresh_token
     );
